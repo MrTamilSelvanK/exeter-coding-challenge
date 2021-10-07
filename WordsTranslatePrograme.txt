@@ -1,0 +1,51 @@
+import time
+import csv
+import tracemalloc
+tracemalloc.start()
+start = time.time()
+text_file=open(r"G:\New folder\t8.shakespeare.txt")
+csv_file=open(r"G:\New folder\french_dictionary.csv")
+trans_file=open("t8.shakespeare.translated.txt","w+")
+g={}
+a=[]
+print("process runing,wait some time(atleast 15 minutes)")
+for i in csv_file:
+    k=i.split(",")
+    a.append(k)
+for j in a:
+    g[j[0]]=j[1]
+h=g.keys()
+s=[]
+for o in h:
+    s.append(o)
+
+for z in text_file:
+    m=z.split(" ")
+    r=""
+    for y in range(len(m)):
+        m[y]=m[y].lower()
+        m[y]=m[y].strip(",")
+    for p in m:
+        if p in s:
+            q=g.get(p)
+            t=m.index(p)
+            m[t]=q
+    for v in m:
+        r=r+" "+(v.strip("\n"))
+    r=r+"\n"
+    trans_file.write(r)
+trans_file.close()
+texted_file=open(r"G:\New folder\t8.shakespeare.txt")
+data=texted_file.read()
+with open ("frequency.csv","w+",newline="",encoding="UTF8") as f:
+    file=csv.writer(f)
+    head=["English word","French word","Frequency"]
+    file.writerow(head)
+    for i in g.keys():
+        occ=data.count(i)
+        val=[i.lstrip(),g.get(i).strip("\n"),occ]
+        file.writerow(val)
+end = time.time()
+print(f"Runtime of the program is {end - start}")
+print(tracemalloc.get_traced_memory())
+tracemalloc.stop()
